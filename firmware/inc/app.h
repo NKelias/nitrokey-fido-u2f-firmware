@@ -27,7 +27,7 @@
 #ifndef APP_H_
 #define APP_H_
 
-#include <SI_EFM8UB1_Register_Enums.h>
+#include <SI_EFM8UB3_Register_Enums.h>
 #include <stdarg.h>
 #include "u2f_hid.h"
 
@@ -50,8 +50,11 @@
 #define U2F_SUPPORT_RNG_CUSTOM
 #define U2F_SUPPORT_SEED_CUSTOM
 
+// comment out this if using bootloader
+#define U2F_USING_BOOTLOADER
+
 // Uncomment this to make configuration firmware
-//#define ATECC_SETUP_DEVICE
+#define ATECC_SETUP_DEVICE
 
 // Touch button test function
 //#define __BUTTON_TEST__                             // Button drives directly the LED. Minimal required press time is determined by BUTTON_MIN_PRESS_T_MS
@@ -132,13 +135,12 @@ struct APP_DATA
 #define U2F_CONFIG_BOOTLOADER			0x88
 #define U2F_CONFIG_BOOTLOADER_DESTROY	0x89
 
+
 struct config_msg
 {
 	uint8_t cmd;
 	uint8_t buf[HID_PACKET_SIZE-1];
 };
-
-
 
 extern uint8_t hidmsgbuf[64];
 extern data struct APP_DATA appdata;

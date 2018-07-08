@@ -24,7 +24,7 @@
 
  */
 
-#include <SI_EFM8UB1_Register_Enums.h>
+#include <SI_EFM8UB3_Register_Enums.h>
 #include <stdint.h>
 #include "app.h"
 #include "i2c.h"
@@ -38,6 +38,7 @@ SI_INTERRUPT (TIMER2_ISR, TIMER2_IRQn)
 	TMR2CN0_TF2H = 0;
 	++_MS_;
 }
+
 
 #define SMB_STATUS_START			0xE0
 #define SMB_STATUS_MTX				0xC0
@@ -214,9 +215,7 @@ SI_INTERRUPT (SMBUS0_ISR, SMBUS0_IRQn)
 // The SMBus is disabled and re-enabled here
 SI_INTERRUPT (TIMER3_ISR, TIMER3_IRQn)
 {
-	//restart_bus();
+	restart_bus();
 }
-
-
 
 

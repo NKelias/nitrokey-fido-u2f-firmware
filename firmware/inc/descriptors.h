@@ -26,7 +26,7 @@ extern "C" {
 #endif
 
 // $[Vendor ID]
-#define USB_VENDOR_ID                      htole16(0x20A0)
+#define USB_VENDOR_ID                      htole16(0x20a0)
 // [Vendor ID]$
 
 // $[Product ID]
