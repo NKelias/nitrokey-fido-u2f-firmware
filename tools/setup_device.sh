@@ -11,6 +11,7 @@ if [[ $# != "2" ]] && [[ $# != "6" ]]
 then
 
     echo "usage: $0 <attestation-private-key> <attestation-public-key.der> [debugger-SN new-SN-for-U2F-token setup-hex-file setup-SN]"
+    echo "eg.: $0 gencert/ca/key.pem gencert/ca/cert.der"
     exit 1
 
 fi
@@ -32,19 +33,17 @@ if [[ $FLASH_TOOLS = 1 ]]
 then
 
     # setup atecc
-    echo "erasing..."
-    erase.sh $SN
-
-    while [[ "$?" -ne "0" ]] ; do
-        echo "$SN is retrying erase ... "
-        sleep 0.2
-        erase.sh $SN
-    done
+    #echo "erasing..."
+    #erase.sh $SN
 
     echo "programming setup..."
     program.sh $SETUP_HEX $SN
-
-    [[ "$?" -ne "0" ]] && exit 1
+    
+    while [[ "$?" -ne "0" ]] ; do
+        echo "$SN is retrying program... "
+        sleep 0.2
+        program.sh $SETUP_HEX $SN
+    done
 
 fi
 
