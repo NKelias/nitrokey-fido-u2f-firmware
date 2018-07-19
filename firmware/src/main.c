@@ -73,7 +73,7 @@ static void init(struct APP_DATA* ap)
 	u2f_hid_init();
 	smb_init();
 	atecc_idle();
-	eeprom_init();
+//	eeprom_init();
 
 	state = APP_NOTHING;
 	error = ERROR_NOTHING;
