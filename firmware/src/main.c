@@ -113,14 +113,14 @@ int16_t main(void) {
 	enter_DefaultMode_from_RESET();
 
 	// ~200 ms interval watchdog
-	//WDTCN = 4;
+	WDTCN = 4;
 
-	//watchdog();
+	watchdog();
 	init(&appdata);
 
 	// Enable interrupts
-	//IE_EA = 1;
-	//watchdog();
+	IE_EA = 1;
+	watchdog();
 
 
 

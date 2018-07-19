@@ -53,8 +53,8 @@ static void WDT_0_enter_DefaultMode_from_RESET(void) {
 	// $[WDTCN - Watchdog Timer Control]
 	SFRPAGE = 0x00;
 	//Disable Watchdog with key sequence
-	WDTCN = 0xDE; //First key
-	WDTCN = 0xAD; //Second key
+//	WDTCN = 0xDE; //First key
+//	WDTCN = 0xAD; //Second key
 	// [WDTCN - Watchdog Timer Control]$
 
 }
