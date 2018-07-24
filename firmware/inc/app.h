@@ -54,7 +54,7 @@
 //#define U2F_USING_BOOTLOADER
 
 // Uncomment this to make configuration firmware
-//#define ATECC_SETUP_DEVICE
+#define ATECC_SETUP_DEVICE
 
 // Touch button test function
 //#define __BUTTON_TEST__                             // Button drives directly the LED. Minimal required press time is determined by BUTTON_MIN_PRESS_T_MS
