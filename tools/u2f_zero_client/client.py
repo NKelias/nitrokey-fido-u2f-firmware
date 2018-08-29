@@ -406,8 +406,8 @@ def bootloader_destroy(h):
     print( 'Erasing bootloader code pages on MCU.')
     h.write([0,commands.U2F_CONFIG_BOOTLOADER_DESTROY])
     data = read_n_tries(h,5,64,1000)
-    if len(data)<2 or data[1] != 1:
-        print(data)
+    if len(data)<2 or data[1] != 1: 
+        print(data) 
         die('failed to remove the bootloader.')
     else:
         print('Device bootloader mode removed.')
@@ -415,9 +415,10 @@ def bootloader_destroy(h):
 
 
 def do_rng(h):
-    cmd = [0,0xff,0xff,0xff,0xff, commands.U2F_CUSTOM_RNG, 0,0]
+    cid = u2fhid_init(h)
     # typically runs around 700 bytes/s
     while True:
+        cmd = [0] + cid + [commands.U2F_CUSTOM_RNG, 0,0]
         h.write(cmd)
         rng = h.read(64,1000)
         if not rng or rng[4] != commands.U2F_CUSTOM_RNG:
@@ -473,7 +474,8 @@ def hexcode2bytes(color):
     return h
 
 def do_wink(h):
-    cmd = cmd_prefix + [ commands.U2F_CUSTOM_WINK, 0,0]
+    cid = u2fhid_init(h)
+    cmd = [0] + cid + [ commands.U2F_CUSTOM_WINK, 0,0]
     h.write(cmd)
 
 def u2fhid_init(h):
