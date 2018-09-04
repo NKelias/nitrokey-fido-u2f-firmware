@@ -219,6 +219,10 @@ static int8_t add_new_cid(uint32_t cid)
 	return -1;
 }
 
+/**
+ * Return internal data structure for given channel ID. If no such CID is registered, return NULL.
+ * 3 channels + 1 broadcast are handled.
+ */
 struct CID* get_cid(uint32_t cid)
 {
 	uint8_t i;
@@ -499,7 +503,7 @@ void u2f_hid_request(struct u2f_hid_msg* req)
 			return;
 		}
 	}
-	else if (cid == NULL || !cid->busy)
+	else if (cid == NULL || (cid != NULL && !cid->busy))
 	{
 		// ignore random cont packets
 		return;

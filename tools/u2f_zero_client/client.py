@@ -417,19 +417,25 @@ def bootloader_destroy(h):
 def do_rng(h):
     cid = u2fhid_init(h)
     # typically runs around 700 bytes/s
-    while True:
-        cmd = [0] + cid + [commands.U2F_CUSTOM_RNG, 0,0]
-        h.write(cmd)
-        rng = h.read(64,1000)
-        if not rng or rng[4] != commands.U2F_CUSTOM_RNG:
-            sys.stderr.write('error: device error\n')
-        else:
-            if rng[6] != 32:
+    try:
+        while True:
+            cmd = [0] + cid + [commands.U2F_CUSTOM_RNG, 0,0]
+            h.write(cmd)
+            rng = h.read(64,1000)
+            if not rng or rng[4] != commands.U2F_CUSTOM_RNG:
                 sys.stderr.write('error: device error\n')
             else:
-                data = array.array('B',rng[6+1:6+1+32]).tostring()
-                sys.stdout.write(data)
-                sys.stdout.flush()
+                if rng[6] != 32:
+                    sys.stderr.write('error: device error\n')
+                else:
+                    data = array.array('B',rng[6+1:6+1+32]).tostring()
+                    sys.stdout.write(data)
+                    sys.stdout.flush()
+    except KeyboardInterrupt:
+        pass
+    if h is not None: h.close()
+
+
 
 def do_seed(h):
     cmd = cmd_prefix + [ commands.U2F_CUSTOM_SEED, 0,20]
@@ -477,13 +483,18 @@ def do_wink(h):
     cid = u2fhid_init(h)
     cmd = [0] + cid + [ commands.U2F_CUSTOM_WINK, 0,0]
     h.write(cmd)
+    if h is not None: h.close()
+
 
 def u2fhid_init(h):
     nonce = [random.randint(0, 0xFF) for i in xrange(0, 8)]
     cmd = cid_broadcast + [commands.U2F_HID_INIT, 0, 8] + nonce
     h.write([0] + cmd)
-    ans = h.read(19, 1000)
-    return ans[15:19]
+    ans = h.read(32, 1000)
+    recv_CID = ans[15:19]
+    recv_nonce = ans[7:15]
+    print('CID acquired: {}, {}'.format(nonce == recv_nonce, recv_CID), file=sys.stderr)
+    return recv_CID
 	
 def get_response_packet_payload(cmd_seq):                # Reads an U2FHID packet, checks it's command/sequence field by the given parameter, returns the payload 
     ans = h.read(64, 200)                                

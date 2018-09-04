@@ -156,25 +156,14 @@ int16_t main(void) {
 			case APP_NOTHING: {}break;                     // Idle state:
 
 			case APP_HID_MSG: {                            // HID msg received, pass to protocols:
-#ifndef ATECC_SETUP_DEVICE
-				struct CID* cid = NULL;
-				cid = get_cid(hid_msg->cid);
-				if (cid == NULL || !cid->busy) {                          // There is no ongoing U2FHID transfer
-					if (!custom_command(hid_msg)) {
-						u2f_hid_request(hid_msg);
-					}
-				} else {
+				if (!custom_command(hid_msg)) {
 					u2f_hid_request(hid_msg);
 				}
-#else
-				if (!custom_command(hid_msg)) {
-					 u2f_hid_request(hid_msg);
-				}
-#endif
+
 				if (state == APP_HID_MSG) {                // The USB msg doesnt ask a special app state
 					state = APP_NOTHING;	               // We can go back to idle
 				}
-			}break;
+			} break;
 		}
 
 		watchdog();

@@ -35,6 +35,11 @@
 #include "gpio.h"
 #include "atecc508a.h"
 
+/**
+ * Returns:
+ * - 1 on finding and executing the custom command.
+ * - 0 otherwise
+ */
 uint8_t custom_command(struct u2f_hid_msg * msg)
 {
 	struct atecc_response res;
